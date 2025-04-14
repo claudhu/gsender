@@ -1,3 +1,3 @@
-module github.com/claudhu/gsend
+module github.com/claudhu/gsender
 
 go 1.23
