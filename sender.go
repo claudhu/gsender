@@ -90,5 +90,10 @@ func (g *GSender) Send(p Payload) {
 }
 
 func NewGSender() *GSender {
+	// check env
+	if os.Getenv("MAIL_API") == "" {
+		fmt.Println("MAIL_API is not set")
+		return nil
+	}
 	return &GSender{}
 }
