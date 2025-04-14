@@ -10,7 +10,9 @@ import (
 	"path/filepath"
 )
 
-type GSender struct{}
+type GSender struct {
+	url string
+}
 
 type Payload struct {
 	To        string   `json:"to"`
@@ -23,7 +25,6 @@ type Payload struct {
 
 func (g *GSender) Send(p Payload) {
 
-	url := os.Getenv("MAIL_API")
 	method := "POST"
 
 	payload := &bytes.Buffer{}
@@ -67,7 +68,7 @@ func (g *GSender) Send(p Payload) {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest(method, url, payload)
+	req, err := http.NewRequest(method, g.url, payload)
 
 	if err != nil {
 		fmt.Println(err)
@@ -89,11 +90,8 @@ func (g *GSender) Send(p Payload) {
 	fmt.Println(string(body))
 }
 
-func NewGSender() *GSender {
-	// check env
-	if os.Getenv("MAIL_API") == "" {
-		fmt.Println("MAIL_API is not set")
-		return nil
+func NewGSender(url string) *GSender {
+	return &GSender{
+		url: url,
 	}
-	return &GSender{}
 }
